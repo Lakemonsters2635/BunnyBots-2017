@@ -10,9 +10,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team2635.robot.commands.DriveCommand;
-import org.usfirst.frc.team2635.robot.commands.ExampleCommand;
-import org.usfirst.frc.team2635.robot.subsystems.Drive;
-import org.usfirst.frc.team2635.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team2635.robot.subsystems.*;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,29 +23,38 @@ import org.usfirst.frc.team2635.robot.subsystems.ExampleSubsystem;
 public class Robot extends IterativeRobot {
 	Joystick leftStick;
 	Joystick rightStick;
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+
 	public static OI oi;
-	
+
 	public static Drive drive;
+	public static Lifter lifter;
 	
 	DriveCommand driveCommand;
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
-
+	
+	public int liftState;
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
+		liftState = 0;
+		
 		oi = new OI();
-		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
+		
 		leftStick = new Joystick(RobotMap.LEFT_JOYSTICK);
 		rightStick = new Joystick(RobotMap.RIGHT_JOYSTICK);
+		
 		drive = new Drive(leftStick, rightStick);
+		lifter = new Lifter();
+		
 		driveCommand = new DriveCommand(leftStick, rightStick);
+		
+		
 	}
 
 	/**
