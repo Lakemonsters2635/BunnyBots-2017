@@ -23,10 +23,10 @@ public class Launcher extends Subsystem {
 	CANTalon flywheel1;
 	PIDController pid0;
 	PIDController pid1;
-	LauncherPidSource pidSource0;
-	LauncherPidSource pidSource1;
-	LauncherPidOutput pidOutput0;
-	LauncherPidOutput pidOutput1;
+	public LauncherPidSource pidSource0;
+	public LauncherPidSource pidSource1;
+	public LauncherPidOutput pidOutput0;
+	public LauncherPidOutput pidOutput1;
 	
 	public Launcher() {
 		flywheel0 = new CANTalon(RobotMap.LAUNCHER_0); //TODO: Set everything to real things

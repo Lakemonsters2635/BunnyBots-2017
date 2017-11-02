@@ -27,7 +27,8 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
 	public static Drive drive;
-	public static Lifter lifter;
+	//public static Lifter lifter;
+	public static Launcher launcher;
 	
 	DriveCommand driveCommand;
 	Command autonomousCommand;
@@ -51,11 +52,32 @@ public class Robot extends IterativeRobot {
 		rightStick = new Joystick(RobotMap.RIGHT_JOYSTICK);
 		
 		drive = new Drive(leftStick, rightStick);
-		lifter = new Lifter();
+		//lifter = new Lifter();
+		launcher = new Launcher();
 		
 		driveCommand = new DriveCommand(leftStick, rightStick);
 		
-		dashboard = new SmartDashboard();
+		//dashboard = new SmartDashboard();
+		
+		
+		
+		
+//		SmartDashboard.putDouble("Launcher Output0", launcher.pidOutput0.getOutput());
+//		SmartDashboard.putDouble("Launcher Output1", launcher.pidOutput1.getOutput());
+//		SmartDashboard.putDouble("Launcher Input0", launcher.pidSource0.pidGet());
+//		SmartDashboard.putDouble("Launcher Input1", launcher.pidSource1.pidGet());
+		
+		SmartDashboard.putDouble("Launcher P Value", RobotMap.LauncherP);
+		SmartDashboard.putDouble("Launcher I Value", RobotMap.LauncherI);
+		SmartDashboard.putDouble("Launcher D Value", RobotMap.LauncherD);
+		SmartDashboard.putDouble("Launcher F Value", RobotMap.LauncherF);
+		SmartDashboard.putDouble("Launcher Setpoint Value", RobotMap.LauncherSetpoint);
+		
+		RobotMap.LauncherP = SmartDashboard.getDouble("Launcher P Value");
+		RobotMap.LauncherI = SmartDashboard.getDouble("Launcher I Value");
+		RobotMap.LauncherD = SmartDashboard.getDouble("Launcher D Value");
+		RobotMap.LauncherF = SmartDashboard.getDouble("Launcher F Value");
+		RobotMap.LauncherSetpoint = SmartDashboard.getDouble("Launcher Setpoint Value");
 	}
 
 	/**
@@ -127,7 +149,16 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		//dashboard.
+		SmartDashboard.putDouble("Launcher Output0", launcher.pidOutput0.getOutput());
+		SmartDashboard.putDouble("Launcher Output1", launcher.pidOutput1.getOutput());
+		SmartDashboard.putDouble("Launcher Input0", launcher.pidSource0.pidGet());
+		SmartDashboard.putDouble("Launcher Input1", launcher.pidSource1.pidGet());
+//		
+//		RobotMap.LauncherP = SmartDashboard.getDouble("Launcher P Value");
+//		RobotMap.LauncherI = SmartDashboard.getDouble("Launcher I Value");
+//		RobotMap.LauncherD = SmartDashboard.getDouble("Launcher D Value");
+//		RobotMap.LauncherF = SmartDashboard.getDouble("Launcher F Value");
+//		RobotMap.LauncherSetpoint = SmartDashboard.getDouble("Launcher Setpoint Value");
 	}
 
 	/**

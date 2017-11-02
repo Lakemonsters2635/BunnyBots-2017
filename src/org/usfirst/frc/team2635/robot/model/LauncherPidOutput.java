@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 
 public class LauncherPidOutput implements PIDOutput {
 	CANTalon launcher;
+	double output;
 	
 	public LauncherPidOutput(CANTalon launcher) {
 		this.launcher = launcher;
@@ -15,6 +16,11 @@ public class LauncherPidOutput implements PIDOutput {
 	public void pidWrite(double output) {
 		// TODO Auto-generated method stub
 		launcher.set(output);
+		this.output = output;
+	}
+	
+	public double getOutput() {
+		return output;
 	}
 
 }

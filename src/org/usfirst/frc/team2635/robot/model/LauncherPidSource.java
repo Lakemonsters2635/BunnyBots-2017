@@ -24,7 +24,7 @@ public class LauncherPidSource implements PIDSource{
 
 	@Override
 	public double pidGet() {
-		double speed =launcher.getSpeed();
+		double speed = launcher.getSpeed();
 		return speed;
 	}
 
