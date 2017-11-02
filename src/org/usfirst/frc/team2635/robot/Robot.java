@@ -32,6 +32,7 @@ public class Robot extends IterativeRobot {
 	DriveCommand driveCommand;
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
+	SmartDashboard dashboard;
 	
 	public int liftState;
 	/**
@@ -54,7 +55,7 @@ public class Robot extends IterativeRobot {
 		
 		driveCommand = new DriveCommand(leftStick, rightStick);
 		
-		
+		dashboard = new SmartDashboard();
 	}
 
 	/**
@@ -125,6 +126,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+		//dashboard.
 	}
 
 	/**
