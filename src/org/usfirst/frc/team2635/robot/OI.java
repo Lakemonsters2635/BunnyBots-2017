@@ -1,6 +1,8 @@
 package org.usfirst.frc.team2635.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
 /**
@@ -35,4 +37,8 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
+	public final Joystick rightJoystick = new Joystick(RobotMap.RIGHT_JOYSTICK);
+	public final Joystick leftJoystick = new Joystick(RobotMap.LEFT_JOYSTICK);
+	
+	public final Button revUpButton = new JoystickButton(leftJoystick, RobotMap.LAUNCHER_BUTTON);
 }

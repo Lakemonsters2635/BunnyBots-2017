@@ -46,12 +46,12 @@ public class Launcher extends Subsystem {
 		pidOutput0 = new LauncherPidOutput(flywheel0);
 		pidOutput1 = new LauncherPidOutput(flywheel1);
 		
-		pid0 = new PIDController(0, 0, 0, 0, pidSource0, pidOutput1); 
-		pid1 = new PIDController(0, 0, 0, 0, pidSource1, pidOutput0); 
+		pid0 = new PIDController(RobotMap.LauncherP, RobotMap.LauncherI, RobotMap.LauncherD, RobotMap.LauncherF, pidSource0, pidOutput0); 
+		pid1 = new PIDController(RobotMap.LauncherP, RobotMap.LauncherI, RobotMap.LauncherD, RobotMap.LauncherF, pidSource1, pidOutput1); 
 		
 		pid0.enable();
 		pid1.enable();
-		
+
 		pid0.setSetpoint(0);
 		pid1.setSetpoint(0);
 	}
@@ -60,7 +60,10 @@ public class Launcher extends Subsystem {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
-
-	
+    
+    public void startLauncher(double speed) {
+    	pid0.setSetpoint(speed);
+    	pid1.setSetpoint(speed);
+    }
 }
 
