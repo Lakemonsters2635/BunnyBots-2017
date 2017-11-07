@@ -13,18 +13,18 @@ public class LauncherPidSource implements PIDSource{
 	
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
-		
+		launcher.setPIDSourceType(pidSource);
 	}
 
 	@Override
 	public PIDSourceType getPIDSourceType() {
-		
-		return null;
+		return launcher.getPIDSourceType();
 	}
 
 	@Override
 	public double pidGet() {
 		double speed = launcher.getSpeed();
+		System.out.println("Speed: " + speed);
 		return speed;
 	}
 

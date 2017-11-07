@@ -9,6 +9,7 @@ import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -21,39 +22,31 @@ public class Launcher extends Subsystem {
     // here. Call these from Commands.
 	CANTalon flywheel0;
 	CANTalon flywheel1;
-	PIDController pid0;
-	PIDController pid1;
-	public LauncherPidSource pidSource0;
-	public LauncherPidSource pidSource1;
-	public LauncherPidOutput pidOutput0;
-	public LauncherPidOutput pidOutput1;
+
 	
 	public Launcher() {
 		flywheel0 = new CANTalon(RobotMap.LAUNCHER_0); //TODO: Set everything to real things
 		flywheel1 = new CANTalon(RobotMap.LAUNCHER_1);
 		
 		flywheel0.changeControlMode(TalonControlMode.Speed);
-		flywheel0.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-		flywheel0.configEncoderCodesPerRev(250);
+		flywheel0.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+		flywheel0.reverseSensor(true);
+		//flywheel0.configEncoderCodesPerRev(250);
 		
 		flywheel1.changeControlMode(TalonControlMode.Speed);
-		flywheel1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-		flywheel1.configEncoderCodesPerRev(250);
+		flywheel1.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+		flywheel1.reverseSensor(true);
+		//flywheel1.configEncoderCodesPerRev(250);
 		
-		pidSource0 = new LauncherPidSource(flywheel0);
-		pidSource1 = new LauncherPidSource(flywheel1);
+		flywheel0.setF(RobotMap.LauncherF);
+        flywheel0.setP(RobotMap.LauncherP);
+        flywheel0.setI(RobotMap.LauncherI); 
+        flywheel0.setD(RobotMap.LauncherD);
 		
-		pidOutput0 = new LauncherPidOutput(flywheel0);
-		pidOutput1 = new LauncherPidOutput(flywheel1);
-		
-		pid0 = new PIDController(RobotMap.LauncherP, RobotMap.LauncherI, RobotMap.LauncherD, RobotMap.LauncherF, pidSource0, pidOutput0); 
-		pid1 = new PIDController(RobotMap.LauncherP, RobotMap.LauncherI, RobotMap.LauncherD, RobotMap.LauncherF, pidSource1, pidOutput1); 
-		
-		pid0.enable();
-		pid1.enable();
-
-		pid0.setSetpoint(0);
-		pid1.setSetpoint(0);
+        flywheel1.setF(RobotMap.LauncherF);
+        flywheel1.setP(RobotMap.LauncherP);
+        flywheel1.setI(RobotMap.LauncherI); 
+        flywheel1.setD(RobotMap.LauncherD);
 	}
 	
     public void initDefaultCommand() {
@@ -62,8 +55,9 @@ public class Launcher extends Subsystem {
     }
     
     public void startLauncher(double speed) {
-    	pid0.setSetpoint(speed);
-    	pid1.setSetpoint(speed);
+    	flywheel0.set(speed);
+    	flywheel1.set(-speed);
+    	//System.out.println("Setpoint set to: " + speed);
     }
 }
 

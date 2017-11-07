@@ -67,17 +67,17 @@ public class Robot extends IterativeRobot {
 //		SmartDashboard.putDouble("Launcher Input0", launcher.pidSource0.pidGet());
 //		SmartDashboard.putDouble("Launcher Input1", launcher.pidSource1.pidGet());
 		
-		SmartDashboard.putDouble("Launcher P Value", RobotMap.LauncherP);
-		SmartDashboard.putDouble("Launcher I Value", RobotMap.LauncherI);
-		SmartDashboard.putDouble("Launcher D Value", RobotMap.LauncherD);
-		SmartDashboard.putDouble("Launcher F Value", RobotMap.LauncherF);
-		SmartDashboard.putDouble("Launcher Setpoint Value", RobotMap.LauncherSetpoint);
-		
-		RobotMap.LauncherP = SmartDashboard.getDouble("Launcher P Value");
-		RobotMap.LauncherI = SmartDashboard.getDouble("Launcher I Value");
-		RobotMap.LauncherD = SmartDashboard.getDouble("Launcher D Value");
-		RobotMap.LauncherF = SmartDashboard.getDouble("Launcher F Value");
-		RobotMap.LauncherSetpoint = SmartDashboard.getDouble("Launcher Setpoint Value");
+//		SmartDashboard.putDouble("Launcher P Value", RobotMap.LauncherP);
+//		SmartDashboard.putDouble("Launcher I Value", RobotMap.LauncherI);
+//		SmartDashboard.putDouble("Launcher D Value", RobotMap.LauncherD);
+//		SmartDashboard.putDouble("Launcher F Value", RobotMap.LauncherF);
+//		SmartDashboard.putDouble("Launcher Setpoint Value", RobotMap.LauncherSetpoint);
+//		
+//		RobotMap.LauncherP = SmartDashboard.getDouble("Launcher P Value");
+//		RobotMap.LauncherI = SmartDashboard.getDouble("Launcher I Value");
+//		RobotMap.LauncherD = SmartDashboard.getDouble("Launcher D Value");
+//		RobotMap.LauncherF = SmartDashboard.getDouble("Launcher F Value");
+//		RobotMap.LauncherSetpoint = SmartDashboard.getDouble("Launcher Setpoint Value");
 	}
 
 	/**
@@ -140,25 +140,29 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.cancel();
 		
 		driveCommand.start();
+		
+		
 	}
 
 	/**
 	 * This function is called periodically during operator control
 	 */
 	@Override
+	
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		SmartDashboard.putDouble("Launcher Output0", launcher.pidOutput0.getOutput());
-		SmartDashboard.putDouble("Launcher Output1", launcher.pidOutput1.getOutput());
-		SmartDashboard.putDouble("Launcher Input0", launcher.pidSource0.pidGet());
-		SmartDashboard.putDouble("Launcher Input1", launcher.pidSource1.pidGet());
+//		SmartDashboard.putDouble("Launcher Output0", launcher.pidOutput0.getOutput());
+//		SmartDashboard.putDouble("Launcher Output1", launcher.pidOutput1.getOutput());
+//		SmartDashboard.putDouble("Launcher Input0", launcher.pidSource0.pidGet());
+//		SmartDashboard.putDouble("Launcher Input1", launcher.pidSource1.pidGet());
 //		
 //		RobotMap.LauncherP = SmartDashboard.getDouble("Launcher P Value");
 //		RobotMap.LauncherI = SmartDashboard.getDouble("Launcher I Value");
 //		RobotMap.LauncherD = SmartDashboard.getDouble("Launcher D Value");
 //		RobotMap.LauncherF = SmartDashboard.getDouble("Launcher F Value");
 //		RobotMap.LauncherSetpoint = SmartDashboard.getDouble("Launcher Setpoint Value");
+		launcher.startLauncher(RobotMap.LauncherSetpoint * rightStick.getRawAxis(RobotMap.LAUNCHER_SPEED_AXIS));
 	}
 
 	/**

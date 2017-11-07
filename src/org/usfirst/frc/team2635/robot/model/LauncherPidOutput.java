@@ -17,6 +17,7 @@ public class LauncherPidOutput implements PIDOutput {
 		// TODO Auto-generated method stub
 		launcher.set(output);
 		this.output = output;
+		System.out.println("Launcher PID Output: " + output);
 	}
 	
 	public double getOutput() {

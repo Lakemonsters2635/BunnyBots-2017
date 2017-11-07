@@ -40,5 +40,5 @@ public class OI {
 	public final Joystick rightJoystick = new Joystick(RobotMap.RIGHT_JOYSTICK);
 	public final Joystick leftJoystick = new Joystick(RobotMap.LEFT_JOYSTICK);
 	
-	public final Button revUpButton = new JoystickButton(leftJoystick, RobotMap.LAUNCHER_BUTTON);
+	//public final Button revUpButton = new JoystickButton(leftJoystick, RobotMap.LAUNCHER_BUTTON);
 }

@@ -7,7 +7,7 @@ package org.usfirst.frc.team2635.robot;
  * floating around.
  */
 public class RobotMap {
-	public static final int DRIVE_RIGHT_FRONT = 1;
+	public static final int DRIVE_RIGHT_FRONT = 5;
 	public static final int DRIVE_RIGHT_BACK = 2;
 	public static final int DRIVE_LEFT_FRONT = 3;
 	public static final int DRIVE_LEFT_BACK = 4;
@@ -16,11 +16,12 @@ public class RobotMap {
 	
 	public static final int RIGHT_JOYSTICK = 1;
 	public static final int LEFT_JOYSTICK = 0;
-	public static final int LAUNCHER_BUTTON = 0;
+	public static final int LAUNCHER_SPEED_AXIS = 2;
+	//public static final int 0p = 0;
 	
-	public static double LauncherP = 10;
-	public static double LauncherI = 0.0004;
+	public static double LauncherP = .1;
+	public static double LauncherI = 0;
 	public static double LauncherD = 0;
-	public static double LauncherF = 1.5345;
-	public static double LauncherSetpoint = 0;
+	public static double LauncherF = 0;
+	public static double LauncherSetpoint = 2500.0;
 }
