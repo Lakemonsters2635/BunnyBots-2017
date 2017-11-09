@@ -19,9 +19,9 @@ public class RobotMap {
 	public static final int LAUNCHER_SPEED_AXIS = 2;
 	//public static final int 0p = 0;
 	
-	public static double LauncherP = .1;
+	public static double LauncherP = 0.15;
 	public static double LauncherI = 0;
 	public static double LauncherD = 0;
-	public static double LauncherF = 0;
+	public static double LauncherF = 0.015;
 	public static double LauncherSetpoint = 2500.0;
 }

@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team2635.robot.commands.DriveCommand;
 import org.usfirst.frc.team2635.robot.subsystems.*;
 
+import com.ctre.CANTalon;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -62,16 +64,17 @@ public class Robot extends IterativeRobot {
 		
 		
 		
-//		SmartDashboard.putDouble("Launcher Output0", launcher.pidOutput0.getOutput());
-//		SmartDashboard.putDouble("Launcher Output1", launcher.pidOutput1.getOutput());
-//		SmartDashboard.putDouble("Launcher Input0", launcher.pidSource0.pidGet());
-//		SmartDashboard.putDouble("Launcher Input1", launcher.pidSource1.pidGet());
+		SmartDashboard.putDouble("Launcher Output0", launcher.flywheel0.getSpeed());
+		SmartDashboard.putDouble("Launcher Output1", launcher.flywheel1.getSpeed());
 		
-//		SmartDashboard.putDouble("Launcher P Value", RobotMap.LauncherP);
-//		SmartDashboard.putDouble("Launcher I Value", RobotMap.LauncherI);
-//		SmartDashboard.putDouble("Launcher D Value", RobotMap.LauncherD);
-//		SmartDashboard.putDouble("Launcher F Value", RobotMap.LauncherF);
-//		SmartDashboard.putDouble("Launcher Setpoint Value", RobotMap.LauncherSetpoint);
+		SmartDashboard.putDouble("Launcher P Value", RobotMap.LauncherP);
+		SmartDashboard.putDouble("Launcher I Value", RobotMap.LauncherI);
+		SmartDashboard.putDouble("Launcher D Value", RobotMap.LauncherD);
+		SmartDashboard.putDouble("Launcher F Value", RobotMap.LauncherF);
+		SmartDashboard.putDouble("Launcher Setpoint Value", RobotMap.LauncherSetpoint);
+		
+		//System.out.println("Flywheel 0 sensor present: " + launcher.flywheel0.isSensorPresent(CANTalon.FeedbackDevice.CtreMagEncoder_Relative));
+		//System.out.println("Flywheel 1 sensor present: " + launcher.flywheel1.isSensorPresent(CANTalon.FeedbackDevice.CtreMagEncoder_Relative));
 //		
 //		RobotMap.LauncherP = SmartDashboard.getDouble("Launcher P Value");
 //		RobotMap.LauncherI = SmartDashboard.getDouble("Launcher I Value");
@@ -141,6 +144,13 @@ public class Robot extends IterativeRobot {
 		
 		driveCommand.start();
 		
+		launcher.setPID(
+				SmartDashboard.getDouble("Launcher P Value"), 
+				SmartDashboard.getDouble("Launcher I Value"), 
+				SmartDashboard.getDouble("Launcher D Value"),
+				SmartDashboard.getDouble("Launcher F Value")
+				);
+		
 		
 	}
 
@@ -152,17 +162,21 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-//		SmartDashboard.putDouble("Launcher Output0", launcher.pidOutput0.getOutput());
-//		SmartDashboard.putDouble("Launcher Output1", launcher.pidOutput1.getOutput());
-//		SmartDashboard.putDouble("Launcher Input0", launcher.pidSource0.pidGet());
-//		SmartDashboard.putDouble("Launcher Input1", launcher.pidSource1.pidGet());
-//		
-//		RobotMap.LauncherP = SmartDashboard.getDouble("Launcher P Value");
+		double setPoint = SmartDashboard.getDouble("Launcher Setpoint Value");
+		//System.out.println("setPoint : " + setPoint);
+		
+		launcher.startLauncher(setPoint);
+		
+		SmartDashboard.putDouble("Launcher Output0", launcher.flywheel0.getSpeed());
+		SmartDashboard.putDouble("Launcher Output1", launcher.flywheel1.getSpeed());
+
+//		RobotMap.LauncherP = 
 //		RobotMap.LauncherI = SmartDashboard.getDouble("Launcher I Value");
 //		RobotMap.LauncherD = SmartDashboard.getDouble("Launcher D Value");
 //		RobotMap.LauncherF = SmartDashboard.getDouble("Launcher F Value");
-//		RobotMap.LauncherSetpoint = SmartDashboard.getDouble("Launcher Setpoint Value");
-		launcher.startLauncher(RobotMap.LauncherSetpoint * rightStick.getRawAxis(RobotMap.LAUNCHER_SPEED_AXIS));
+		RobotMap.LauncherSetpoint = SmartDashboard.getDouble("Launcher Setpoint Value");
+		
+		
 	}
 
 	/**
