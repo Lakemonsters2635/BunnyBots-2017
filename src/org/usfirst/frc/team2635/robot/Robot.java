@@ -9,7 +9,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team2635.robot.commands.ClampIn;
+import org.usfirst.frc.team2635.robot.commands.ClampOut;
 import org.usfirst.frc.team2635.robot.commands.DriveCommand;
+import org.usfirst.frc.team2635.robot.commands.LiftDown;
+import org.usfirst.frc.team2635.robot.commands.LiftUp;
 import org.usfirst.frc.team2635.robot.subsystems.*;
 
 import com.ctre.CANTalon;
@@ -29,7 +33,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
 	public static Drive drive;
-	//public static Lifter lifter;
+	public static Lifter lifter;
 	public static Launcher launcher;
 	
 	DriveCommand driveCommand;
@@ -54,15 +58,14 @@ public class Robot extends IterativeRobot {
 		rightStick = new Joystick(RobotMap.RIGHT_JOYSTICK);
 		
 		drive = new Drive(leftStick, rightStick);
-		//lifter = new Lifter();
+		lifter = new Lifter();
 		launcher = new Launcher();
 		
 		driveCommand = new DriveCommand(leftStick, rightStick);
 		
+		//oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
+		
 		//dashboard = new SmartDashboard();
-		
-		
-		
 		
 		SmartDashboard.putDouble("Launcher Output0", launcher.flywheel0.getSpeed());
 		SmartDashboard.putDouble("Launcher Output1", launcher.flywheel1.getSpeed());
@@ -165,12 +168,23 @@ public class Robot extends IterativeRobot {
 		double setPoint = SmartDashboard.getDouble("Launcher Setpoint Value");
 		//System.out.println("setPoint : " + setPoint);
 		
-		launcher.startLauncher(setPoint);
+		//launcher.startLauncher(setPoint);
+		LiftDown liftDown = new LiftDown(2);
+		liftDown.start();
+		LiftUp liftUp = new LiftUp(2);
+		liftUp.start();
+		
+		ClampIn clampIn = new ClampIn(2);
+		clampIn.start();
+		ClampOut clampOut= new ClampOut(2);
+		clampOut.start();
+		
+		
 		
 		SmartDashboard.putDouble("Launcher Output0", launcher.flywheel0.getSpeed());
 		SmartDashboard.putDouble("Launcher Output1", launcher.flywheel1.getSpeed());
 
-//		RobotMap.LauncherP = 
+//		RobotMap.LauncherP = SmartDashboard.getDouble("Launcher P Value");
 //		RobotMap.LauncherI = SmartDashboard.getDouble("Launcher I Value");
 //		RobotMap.LauncherD = SmartDashboard.getDouble("Launcher D Value");
 //		RobotMap.LauncherF = SmartDashboard.getDouble("Launcher F Value");
