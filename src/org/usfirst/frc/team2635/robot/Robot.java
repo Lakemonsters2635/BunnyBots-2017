@@ -4,16 +4,14 @@ package org.usfirst.frc.team2635.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team2635.robot.commands.ClampIn;
-import org.usfirst.frc.team2635.robot.commands.ClampOut;
-import org.usfirst.frc.team2635.robot.commands.DriveCommand;
-import org.usfirst.frc.team2635.robot.commands.LiftDown;
-import org.usfirst.frc.team2635.robot.commands.LiftUp;
+import org.usfirst.frc.team2635.robot.commands.*;
+import org.usfirst.frc.team2635.robot.model.CommandGroupLibrary;
 import org.usfirst.frc.team2635.robot.subsystems.*;
 
 import com.ctre.CANTalon;
@@ -40,6 +38,10 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	SmartDashboard dashboard;
+	LiftUp liftUp;
+	ClampOut clampOut;
+	CommandGroup lifterInit;
+	public static boolean lifterOpen;
 	
 	public int liftState;
 	/**
@@ -63,9 +65,18 @@ public class Robot extends IterativeRobot {
 		
 		driveCommand = new DriveCommand(leftStick, rightStick);
 		
-		//oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
+//		oi.liftUpButton.whenPressed(new LiftUp(2));
+//		oi.liftDownButton.whenPressed(new LiftDown(2));
+//		
+//		oi.clampInButton.whenPressed(new ClampIn(2));
+//		oi.clampOutButton.whenPressed(new ClampOut(2));
 		
-		//dashboard = new SmartDashboard();
+		oi.liftOpenButton.whenPressed(CommandGroupLibrary.lifterOpen());
+		oi.liftClosedButton.whenPressed(CommandGroupLibrary.lifterClosed());
+		
+		oi.revUpButton.whileHeld(new LauncherCmd());
+		
+		lifterOpen = true;
 		
 		SmartDashboard.putDouble("Launcher Output0", launcher.flywheel0.getSpeed());
 		SmartDashboard.putDouble("Launcher Output1", launcher.flywheel1.getSpeed());
@@ -144,6 +155,8 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+	
+		CommandGroupLibrary.lifterInit().start();
 		
 		driveCommand.start();
 		
@@ -169,15 +182,15 @@ public class Robot extends IterativeRobot {
 		//System.out.println("setPoint : " + setPoint);
 		
 		//launcher.startLauncher(setPoint);
-		LiftDown liftDown = new LiftDown(2);
-		liftDown.start();
-		LiftUp liftUp = new LiftUp(2);
-		liftUp.start();
-		
-		ClampIn clampIn = new ClampIn(2);
-		clampIn.start();
-		ClampOut clampOut= new ClampOut(2);
-		clampOut.start();
+//		LiftDown liftDown = new LiftDown(2);
+//		liftDown.start();
+//		LiftUp liftUp = new LiftUp(2);
+//		liftUp.start();
+//		
+//		ClampIn clampIn = new ClampIn(2);
+//		clampIn.start();
+//		ClampOut clampOut= new ClampOut(2);
+//		clampOut.start();
 		
 		
 		

@@ -29,19 +29,19 @@ public class Lifter extends Subsystem {
 	}
 	
 	public void liftUp() {
-		vertical.set(Value.kForward);
-	}
-	
-	public void liftDown() {
 		vertical.set(Value.kReverse);
 	}
 	
+	public void liftDown() {
+		vertical.set(Value.kForward);
+	}
+	
 	public void clampIn() {
-		horizontal.set(Value.kReverse);
+		horizontal.set(Value.kForward);
 	}
 	
 	public void clampOut() {
-		horizontal.set(Value.kForward);
+		horizontal.set(Value.kReverse);
 	}
 	
     public void initDefaultCommand() {

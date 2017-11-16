@@ -70,6 +70,7 @@ public class Launcher extends Subsystem {
         flywheel1.setD(D);
     }
     public void startLauncher(double speed) {
+    	System.out.println("Laucher done. Speed is: " + speed);
     	flywheel0.set(speed);
     	flywheel1.set(-speed);
     	
