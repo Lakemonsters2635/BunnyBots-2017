@@ -28,6 +28,7 @@ public class CommandGroupLibrary {
 		CommandGroup lifterInit = new CommandGroup();
 		lifterInit.addSequential(new LiftUp(2));
 		lifterInit.addSequential(new ClampOut(2));
+		
 		return lifterInit;
 	}
 }

@@ -1,4 +1,3 @@
-
 package org.usfirst.frc.team2635.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -15,6 +14,7 @@ import org.usfirst.frc.team2635.robot.model.CommandGroupLibrary;
 import org.usfirst.frc.team2635.robot.subsystems.*;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
 
 
 /**
@@ -24,6 +24,10 @@ import com.ctre.CANTalon;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
+
+//Camera base is : 20.415 inches.
+
+
 public class Robot extends IterativeRobot {
 	Joystick leftStick;
 	Joystick rightStick;
@@ -33,15 +37,24 @@ public class Robot extends IterativeRobot {
 	public static Drive drive;
 	public static Lifter lifter;
 	public static Launcher launcher;
+	public static Pike pike;
 	
 	DriveCommand driveCommand;
+	PikeCommand pikeCommand;
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	SmartDashboard dashboard;
 	LiftUp liftUp;
 	ClampOut clampOut;
-	CommandGroup lifterInit;
+
+	
 	public static boolean lifterOpen;
+	
+	CANTalon flywheel0;
+	CANTalon flywheel1;
+	CANTalon orienter0;
+	CANTalon orienter1;
+	CANTalon feeder;
 	
 	public int liftState;
 	/**
@@ -51,7 +64,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		liftState = 0;
-		
+
 		oi = new OI();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
@@ -62,8 +75,10 @@ public class Robot extends IterativeRobot {
 		drive = new Drive(leftStick, rightStick);
 		lifter = new Lifter();
 		launcher = new Launcher();
+		pike = new Pike();
 		
 		driveCommand = new DriveCommand(leftStick, rightStick);
+		pikeCommand = new PikeCommand();
 		
 //		oi.liftUpButton.whenPressed(new LiftUp(2));
 //		oi.liftDownButton.whenPressed(new LiftDown(2));
@@ -73,19 +88,21 @@ public class Robot extends IterativeRobot {
 		
 		oi.liftOpenButton.whenPressed(CommandGroupLibrary.lifterOpen());
 		oi.liftClosedButton.whenPressed(CommandGroupLibrary.lifterClosed());
+		//oi.pikeButton.whenPressed(pikeCommand);
+		oi.pikeButton.toggleWhenPressed(pikeCommand);
 		
-		oi.revUpButton.whileHeld(new LauncherCmd());
+		//oi.revUpButton.whileHeld(new LauncherCmd());
 		
 		lifterOpen = true;
 		
-		SmartDashboard.putDouble("Launcher Output0", launcher.flywheel0.getSpeed());
-		SmartDashboard.putDouble("Launcher Output1", launcher.flywheel1.getSpeed());
+		SmartDashboard.putDouble("Launcher Output0", 0);
+		SmartDashboard.putDouble("Launcher Output1", 0);
 		
-		SmartDashboard.putDouble("Launcher P Value", RobotMap.LauncherP);
-		SmartDashboard.putDouble("Launcher I Value", RobotMap.LauncherI);
-		SmartDashboard.putDouble("Launcher D Value", RobotMap.LauncherD);
-		SmartDashboard.putDouble("Launcher F Value", RobotMap.LauncherF);
-		SmartDashboard.putDouble("Launcher Setpoint Value", RobotMap.LauncherSetpoint);
+//		SmartDashboard.putDouble("Launcher P Value", RobotMap.LauncherP);
+//		SmartDashboard.putDouble("Launcher I Value", RobotMap.LauncherI);
+//		SmartDashboard.putDouble("Launcher D Value", RobotMap.LauncherD);
+//		SmartDashboard.putDouble("Launcher F Value", RobotMap.LauncherF);
+//		SmartDashboard.putDouble("Launcher Setpoint Value", RobotMap.LauncherSetpoint);
 		
 		//System.out.println("Flywheel 0 sensor present: " + launcher.flywheel0.isSensorPresent(CANTalon.FeedbackDevice.CtreMagEncoder_Relative));
 		//System.out.println("Flywheel 1 sensor present: " + launcher.flywheel1.isSensorPresent(CANTalon.FeedbackDevice.CtreMagEncoder_Relative));
@@ -95,6 +112,22 @@ public class Robot extends IterativeRobot {
 //		RobotMap.LauncherD = SmartDashboard.getDouble("Launcher D Value");
 //		RobotMap.LauncherF = SmartDashboard.getDouble("Launcher F Value");
 //		RobotMap.LauncherSetpoint = SmartDashboard.getDouble("Launcher Setpoint Value");
+		
+		flywheel0 = new CANTalon(RobotMap.LAUNCHER_0); //TODO: Set everything to real things
+		flywheel1 = new CANTalon(RobotMap.LAUNCHER_1);
+		
+		flywheel0.changeControlMode(TalonControlMode.PercentVbus);
+		flywheel0.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+		
+		flywheel1.changeControlMode(TalonControlMode.PercentVbus);
+		flywheel1.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+		
+		launcher.setPIDF(RobotMap.LauncherP, RobotMap.LauncherI, RobotMap.LauncherD, RobotMap.LauncherF);
+		launcher.setSetpoint(RobotMap.LauncherSetpoint);
+		
+		orienter0 = new CANTalon(RobotMap.ORIENTER_0);
+		orienter1 = new CANTalon(RobotMap.ORIENTER_1);
+		feeder = new CANTalon(RobotMap.FEEDER);
 	}
 
 	/**
@@ -126,7 +159,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		autonomousCommand = chooser.getSelected();
-
+		
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -153,19 +186,24 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+		
+		
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-	
-		CommandGroupLibrary.lifterInit().start();
+		
+
+		
+		//CommandGroupLibrary.lifterInit().start();
 		
 		driveCommand.start();
 		
-		launcher.setPID(
-				SmartDashboard.getDouble("Launcher P Value"), 
-				SmartDashboard.getDouble("Launcher I Value"), 
-				SmartDashboard.getDouble("Launcher D Value"),
-				SmartDashboard.getDouble("Launcher F Value")
-				);
+		
+//		launcher.setPID(
+//				SmartDashboard.getDouble("Launcher P Value"), 
+//				SmartDashboard.getDouble("Launcher I Value"), 
+//				SmartDashboard.getDouble("Launcher D Value"),
+//				SmartDashboard.getDouble("Launcher F Value")
+//				);
 		
 		
 	}
@@ -178,7 +216,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		double setPoint = SmartDashboard.getDouble("Launcher Setpoint Value");
+		//double setPoint = SmartDashboard.getDouble("Launcher Setpoint Value");
 		//System.out.println("setPoint : " + setPoint);
 		
 		//launcher.startLauncher(setPoint);
@@ -192,16 +230,29 @@ public class Robot extends IterativeRobot {
 //		ClampOut clampOut= new ClampOut(2);
 //		clampOut.start();
 		
+		if(leftStick.getRawButton(RobotMap.LAUNCHER_BUTTON)) {
+			flywheel0.set(-launcher.calculateSpeed(-flywheel0.getSpeed()));
+			flywheel1.set(launcher.calculateSpeed(flywheel1.getSpeed()));
+			
+			orienter0.set(0.25);
+			orienter1.set(-0.25);
+			
+			feeder.set(0.5);
+			
+		} else {
+			flywheel0.set(0);
+			flywheel1.set(0);
+		}
+		SmartDashboard.putDouble("Launcher Output0", flywheel0.getSpeed());
+		SmartDashboard.putDouble("Launcher Output1", flywheel1.getSpeed());
 		
 		
-		SmartDashboard.putDouble("Launcher Output0", launcher.flywheel0.getSpeed());
-		SmartDashboard.putDouble("Launcher Output1", launcher.flywheel1.getSpeed());
 
 //		RobotMap.LauncherP = SmartDashboard.getDouble("Launcher P Value");
 //		RobotMap.LauncherI = SmartDashboard.getDouble("Launcher I Value");
 //		RobotMap.LauncherD = SmartDashboard.getDouble("Launcher D Value");
 //		RobotMap.LauncherF = SmartDashboard.getDouble("Launcher F Value");
-		RobotMap.LauncherSetpoint = SmartDashboard.getDouble("Launcher Setpoint Value");
+		//RobotMap.LauncherSetpoint = SmartDashboard.getDouble("Launcher Setpoint Value");
 		
 		
 	}

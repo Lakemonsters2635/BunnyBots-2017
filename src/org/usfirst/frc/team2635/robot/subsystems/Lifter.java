@@ -20,8 +20,10 @@ public class Lifter extends Subsystem {
 	public Lifter() {
 		rotate = new CANTalon(0); //TODO: Give a real constants
 		
-		vertical = new DoubleSolenoid(0, 1);
-		horizontal = new DoubleSolenoid(2,3);
+		//vertical = new DoubleSolenoid(0, 1);
+		//horizontal = new DoubleSolenoid(2,3);
+		liftUp();
+		clampOut();
 	}
 	
 	public void rotate() {
@@ -29,19 +31,19 @@ public class Lifter extends Subsystem {
 	}
 	
 	public void liftUp() {
-		vertical.set(Value.kReverse);
+		//vertical.set(Value.kReverse);
 	}
 	
 	public void liftDown() {
-		vertical.set(Value.kForward);
+		//vertical.set(Value.kForward);
 	}
 	
 	public void clampIn() {
-		horizontal.set(Value.kForward);
+		//horizontal.set(Value.kForward);
 	}
 	
 	public void clampOut() {
-		horizontal.set(Value.kReverse);
+		//horizontal.set(Value.kReverse);
 	}
 	
     public void initDefaultCommand() {

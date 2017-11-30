@@ -45,6 +45,6 @@ public class OI {
 //	public final Button clampOutButton = new JoystickButton(rightJoystick, RobotMap.CLAMP_OUT_BUTTON);
 	public final Button liftOpenButton = new JoystickButton(rightJoystick, RobotMap.LIFT_UP_BUTTON);
 	public final Button liftClosedButton = new JoystickButton(rightJoystick, RobotMap.LIFT_DOWN_BUTTON);
-	
+	public final Button pikeButton = new JoystickButton(leftJoystick, RobotMap.PIKE_BUTTON);
 	public final Button revUpButton = new JoystickButton(leftJoystick, RobotMap.LAUNCHER_BUTTON);
 }

@@ -3,30 +3,28 @@ package org.usfirst.frc.team2635.robot.commands;
 import org.usfirst.frc.team2635.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class LauncherCmd extends Command {
+public class PikeCommand extends Command {
 
-	    public LauncherCmd() {
+    public PikeCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.launcher);
-    
+    	requires(Robot.pike);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.pike.pikeOut();
+    	System.out.println("PikeCommand.initalized() called");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-		double smartDashBoardspeed = SmartDashboard.getDouble("Launcher Setpoint Value");
-
-    	
-    	//Robot.launcher.startLauncher(smartDashBoardspeed);
+    	//Robot.pike.pikeOut();
+    	//System.out.println("PikeCommand.execute() called");
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -36,12 +34,13 @@ public class LauncherCmd extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	//Robot.launcher.startLauncher(0);
+    	Robot.pike.pikeIn();
+    	System.out.println("PikeCommand.end() called");
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	//Robot.launcher.startLauncher(0);
+    	end();
     }
 }
