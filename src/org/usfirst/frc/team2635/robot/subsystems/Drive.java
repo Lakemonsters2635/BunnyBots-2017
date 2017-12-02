@@ -4,6 +4,7 @@ import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.commands.DriveCommand;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -19,25 +20,37 @@ public class Drive extends Subsystem {
 	CANTalon frontRightMotor;
 	CANTalon rearRightMotor;
 	RobotDrive drive;
+	DriveCommand teleopCommand; 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	Joystick rightStick;
 	Joystick leftStick;
 	public Drive(Joystick leftStick,Joystick rightStick) {
+		
+
+		
+		
 		frontLeftMotor = new CANTalon(RobotMap.DRIVE_LEFT_FRONT);
 		frontRightMotor = new CANTalon(RobotMap.DRIVE_RIGHT_FRONT);
 		rearLeftMotor = new CANTalon(RobotMap.DRIVE_LEFT_BACK);
 		rearRightMotor = new CANTalon(RobotMap.DRIVE_RIGHT_BACK);
-		
 		drive = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 		this.leftStick = leftStick;
 		this.rightStick = rightStick;
+		
+		frontLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
+		frontRightMotor.changeControlMode(TalonControlMode.PercentVbus);
+		rearLeftMotor.changeControlMode(TalonControlMode.PercentVbus);
+		rearRightMotor.changeControlMode(TalonControlMode.PercentVbus);
+
 	}
 	public void tankDrive(double left, double right) {
 		drive.tankDrive(-left, -right);
 	}
     public void initDefaultCommand() {
-        //setDefaultCommand(new DriveCommand(leftStick, rightStick));
+		System.out.println("Init default command");
+		teleopCommand = new DriveCommand(leftStick, rightStick);
+		setDefaultCommand(teleopCommand);
     }
 }
 

@@ -38,6 +38,7 @@ public class Robot extends IterativeRobot {
 	public static Lifter lifter;
 	public static Launcher launcher;
 	public static Pike pike;
+	public static LimitSwitch limitSwitch;
 	
 	DriveCommand driveCommand;
 	PikeCommand pikeCommand;
@@ -76,6 +77,7 @@ public class Robot extends IterativeRobot {
 		lifter = new Lifter();
 		launcher = new Launcher();
 		pike = new Pike();
+		limitSwitch = new LimitSwitch();
 		
 		driveCommand = new DriveCommand(leftStick, rightStick);
 		pikeCommand = new PikeCommand();
@@ -90,6 +92,7 @@ public class Robot extends IterativeRobot {
 		oi.liftClosedButton.whenPressed(CommandGroupLibrary.lifterClosed());
 		//oi.pikeButton.whenPressed(pikeCommand);
 		oi.pikeButton.toggleWhenPressed(pikeCommand);
+		oi.limitSwitchButton.whileHeld(new LimitSwitchCommand());
 		
 		//oi.revUpButton.whileHeld(new LauncherCmd());
 		
@@ -243,8 +246,8 @@ public class Robot extends IterativeRobot {
 			flywheel0.set(0);
 			flywheel1.set(0);
 		}
-		SmartDashboard.putDouble("Launcher Output0", flywheel0.getSpeed());
-		SmartDashboard.putDouble("Launcher Output1", flywheel1.getSpeed());
+		//SmartDashboard.putDouble("Launcher Output0", flywheel0.getSpeed());
+		//SmartDashboard.putDouble("Launcher Output1", flywheel1.getSpeed());
 		
 		
 
