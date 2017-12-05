@@ -8,47 +8,50 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class LimitSwitchCommand extends Command {
-
-    public LimitSwitchCommand() {
+public class DriveStraightCommand extends Command {
+	double speed;
+	double time;
+	Timer timer;
+	boolean isFinished;
+	
+    public DriveStraightCommand(double speed, double time) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.drive);
     	requires(Robot.limitSwitch);
+    	this.speed = speed;
+    	this.time = time;
+    	timer = new Timer();
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
+    	//Robot.drive.driveForward(speed);
+    	timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-//    	while (Robot.limitSwitch.get()) {
-//    		Timer.delay(10);
-//    		
-//    	}
-    	
-//    	boolean switchResult = Robot.limitSwitch.get();
-//    	System.out.println("switchResult:" + switchResult);
+    	Robot.drive.driveForward(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	boolean isFinished = !Robot.limitSwitch.get();
-    	if (isFinished) {
-    		System.out.println("finished with limit switch");
-    	}
-        return isFinished;
-        
+    	boolean limit = Robot.limitSwitch.get();
+    	boolean timePassed = timer.hasPeriodPassed(time);
+    	System.out.println(limit + " " + timePassed);
+    	return (limit|| timePassed);
+
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.drive.stopDriving();
+    	timer.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.limitSwitch.get();
     }
 }

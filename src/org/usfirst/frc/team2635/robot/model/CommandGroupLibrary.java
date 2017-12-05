@@ -1,10 +1,8 @@
 package org.usfirst.frc.team2635.robot.model;
 
 import org.usfirst.frc.team2635.robot.Robot;
-import org.usfirst.frc.team2635.robot.commands.ClampIn;
-import org.usfirst.frc.team2635.robot.commands.ClampOut;
-import org.usfirst.frc.team2635.robot.commands.LiftDown;
-import org.usfirst.frc.team2635.robot.commands.LiftUp;
+import org.usfirst.frc.team2635.robot.commands.*;
+
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -30,5 +28,13 @@ public class CommandGroupLibrary {
 		lifterInit.addSequential(new ClampOut(2));
 		
 		return lifterInit;
+	}
+	
+	public static CommandGroup autonomousCommand() {
+		CommandGroup autonomousCommand = new CommandGroup();
+		autonomousCommand.addSequential(new DriveStraightCommand(.5,5));
+		autonomousCommand.addSequential(lifterClosed());
+		
+		return autonomousCommand;
 	}
 }

@@ -47,10 +47,25 @@ public class Drive extends Subsystem {
 	public void tankDrive(double left, double right) {
 		drive.tankDrive(-left, -right);
 	}
+	
     public void initDefaultCommand() {
 		System.out.println("Init default command");
 		teleopCommand = new DriveCommand(leftStick, rightStick);
 		setDefaultCommand(teleopCommand);
+    }
+    
+    public void driveForward(double speed) {
+    	frontLeftMotor.set(speed);
+    	rearLeftMotor.set(speed);
+    	frontRightMotor.set(-speed);
+    	frontRightMotor.set(-speed);
+    }
+    
+    public void stopDriving() {
+    	frontLeftMotor.set(0);
+    	rearLeftMotor.set(0);
+    	frontRightMotor.set(0);
+    	frontRightMotor.set(0);
     }
 }
 

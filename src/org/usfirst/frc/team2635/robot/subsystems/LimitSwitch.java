@@ -20,7 +20,7 @@ public class LimitSwitch extends Subsystem {
 	}
 
 	public boolean get() {
-		return limitSwitch.get();
+		return !limitSwitch.get();
 	}
 	
     public void initDefaultCommand() {

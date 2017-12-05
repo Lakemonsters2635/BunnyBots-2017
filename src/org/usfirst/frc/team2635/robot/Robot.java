@@ -47,6 +47,7 @@ public class Robot extends IterativeRobot {
 	SmartDashboard dashboard;
 	LiftUp liftUp;
 	ClampOut clampOut;
+	DriveStraightCommand driveStraight;
 
 	
 	public static boolean lifterOpen;
@@ -173,6 +174,9 @@ public class Robot extends IterativeRobot {
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 			autonomousCommand.start();
+		//driveStraight = new DriveStraightCommand(.5,5);
+		//driveStraight.start();
+		CommandGroupLibrary.autonomousCommand().start();
 	}
 
 	/**
