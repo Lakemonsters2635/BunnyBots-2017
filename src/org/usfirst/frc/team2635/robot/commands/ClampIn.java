@@ -16,6 +16,7 @@ public class ClampIn extends TimedCommand {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	System.out.println("ClampIn Command");
     	Robot.lifter.clampIn();
     }
 

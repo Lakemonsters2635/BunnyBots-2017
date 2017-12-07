@@ -48,6 +48,7 @@ public class Robot extends IterativeRobot {
 	LiftUp liftUp;
 	ClampOut clampOut;
 	DriveStraightCommand driveStraight;
+	LauncherCmd launcherCommand;
 
 	
 	public static boolean lifterOpen;
@@ -82,6 +83,8 @@ public class Robot extends IterativeRobot {
 		
 		driveCommand = new DriveCommand(leftStick, rightStick);
 		pikeCommand = new PikeCommand();
+		launcherCommand = new LauncherCmd();
+		
 		
 //		oi.liftUpButton.whenPressed(new LiftUp(2));
 //		oi.liftDownButton.whenPressed(new LiftDown(2));
@@ -94,6 +97,7 @@ public class Robot extends IterativeRobot {
 		//oi.pikeButton.whenPressed(pikeCommand);
 		oi.pikeButton.toggleWhenPressed(pikeCommand);
 		oi.limitSwitchButton.whileHeld(new LimitSwitchCommand());
+		oi.revUpButton.toggleWhenPressed(launcherCommand);
 		
 		//oi.revUpButton.whileHeld(new LauncherCmd());
 		
@@ -237,19 +241,24 @@ public class Robot extends IterativeRobot {
 //		ClampOut clampOut= new ClampOut(2);
 //		clampOut.start();
 		
-		if(leftStick.getRawButton(RobotMap.LAUNCHER_BUTTON)) {
-			flywheel0.set(-launcher.calculateSpeed(-flywheel0.getSpeed()));
-			flywheel1.set(launcher.calculateSpeed(flywheel1.getSpeed()));
-			
-			orienter0.set(0.25);
-			orienter1.set(-0.25);
-			
-			feeder.set(0.5);
-			
-		} else {
-			flywheel0.set(0);
-			flywheel1.set(0);
-		}
+//		if(leftStick.getRawButton(RobotMap.LAUNCHER_BUTTON)) {
+//			flywheel0.set(-launcher.calculateSpeed(-flywheel0.getSpeed()));
+//			flywheel1.set(launcher.calculateSpeed(flywheel1.getSpeed()));
+//			
+//			orienter0.set(0.15);
+//			orienter1.set(0.15);
+//			
+//			feeder.set(0.5);
+//			
+//		} else {
+//			flywheel0.set(0);
+//			flywheel1.set(0);
+//
+//			orienter0.set(0);
+//			orienter1.set(0);
+//			
+//			feeder.set(0);
+//		}
 		//SmartDashboard.putDouble("Launcher Output0", flywheel0.getSpeed());
 		//SmartDashboard.putDouble("Launcher Output1", flywheel1.getSpeed());
 		

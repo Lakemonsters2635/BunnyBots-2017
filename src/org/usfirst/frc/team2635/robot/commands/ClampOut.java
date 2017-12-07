@@ -18,6 +18,7 @@ public class ClampOut extends TimedCommand {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	System.out.println("ClampOut Command");
     	Robot.lifter.clampOut();
     }
 

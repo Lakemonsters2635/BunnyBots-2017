@@ -18,6 +18,7 @@ public class LiftDown extends TimedCommand {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	System.out.println("LiftDown Command");
     	Robot.lifter.liftDown();
     }
 

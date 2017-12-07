@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2635.robot.subsystems;
 
 import org.usfirst.frc.team2635.robot.Robot;
+import org.usfirst.frc.team2635.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -16,7 +17,7 @@ public class Pike extends Subsystem {
 	DoubleSolenoid pike;
 	
 	public Pike() {
-		pike = new DoubleSolenoid(0,1);
+		pike = new DoubleSolenoid(RobotMap.PIKE_CHANNEL_0,RobotMap.PIKE_CHANNEL_1);
 		pikeIn();
 	}
 	

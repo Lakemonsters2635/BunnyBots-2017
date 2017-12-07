@@ -10,7 +10,6 @@ public class CommandGroupLibrary {
 	
 	public static CommandGroup lifterClosed() {
 		CommandGroup lifterClosed = new CommandGroup();
-		
     	lifterClosed.addSequential(new LiftDown(2));
     	lifterClosed.addSequential(new ClampIn(2));
     	lifterClosed.addSequential(new LiftUp(2));
